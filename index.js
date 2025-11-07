@@ -22,10 +22,31 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     await client.connect();
+    const featuredGardenersCollection = client.db('urbanGardenDB').collection('featuredGardeners');
+    const tipsCollection = client.db('urbanGardenDB').collection('tips');
+    app.get('/featuredGardeners', async (req, res) => {
+            const result = await featuredGardenersCollection.find().toArray();
+            res.send(result);
+        });
+    app.get('/activeFeaturedGardeners', async (req, res) => {
+            const activeGardeners = await featuredGardenersCollection
+              .find({ status: "active" })
+              .limit(6)
+              .toArray();
+            res.send(activeGardeners);
+        });
+    app.get('/tips', async(req,res)=>{
+            const result = await tipsCollection.find().toArray();
+            res.send(result);
+        });
+    app.get('/topTips', async(req,res)=>{
+            const result = await tipsCollection.find().limit(6).toArray();
+            res.send(result);
+        });
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
-    await client.close();
+    //await client.close();
   }
 }
 run().catch(console.dir);
