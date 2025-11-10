@@ -55,7 +55,4 @@ run().catch(console.dir);
 app.get('/',(req,res)=>{
     res.send("UrbanGarden")
 })
-app.listen(port,()=>{
-    console.log(`runng on port ${port}`);
-});
-//module.exports = app;
+module.exports = app;
