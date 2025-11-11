@@ -24,6 +24,7 @@ async function run() {
     await client.connect();
     const featuredGardenersCollection = client.db('urbanGardenDB').collection('featuredGardeners');
     const tipsCollection = client.db('urbanGardenDB').collection('tips');
+    const sharedTipsCollestion = client.db('urbanGardenDB').collection('sharedTips');
     app.get('/featuredGardeners', async (req, res) => {
             const result = await featuredGardenersCollection.find().toArray();
             res.send(result);
@@ -43,6 +44,16 @@ async function run() {
             const result = await tipsCollection.find().limit(6).toArray();
             res.send(result);
         });
+    app.get('/sharedTips', async(req,res)=>{
+      const result = await sharedTipsCollestion.find().toArray();
+      res.send(result);
+    })
+    app.post('/sharedTips', async(req,res)=>{
+      const sharedTip = req.body;
+      const result = await sharedTipsCollestion.insertOne(sharedTip);
+      res.send(result);
+
+    })
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
