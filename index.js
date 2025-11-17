@@ -48,6 +48,11 @@ async function run() {
       const result = await sharedTipsCollestion.find({ availability: "Public" }).toArray();
       res.send(result);
     })
+    app.get('/sharedTips/:name', async(req,res)=>{
+      const name = req.params.name;
+      const result = await sharedTipsCollestion.find({ userName: name}).toArray();
+      res.send(result);
+    })
     app.get('/sharedTips/:id', async(req,res)=>{
       const id = req.params.id;
       const  query = {_id: new ObjectId(id)}
@@ -58,7 +63,12 @@ async function run() {
       const sharedTip = req.body;
       const result = await sharedTipsCollestion.insertOne(sharedTip);
       res.send(result);
-
+    })
+    app.delete('/sharedTips/:id', async(req, res)=>{
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)}
+      const result = await sharedTipsCollestion.deleteOne(query);
+      res.send(result);
     })
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
