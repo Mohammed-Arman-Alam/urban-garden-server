@@ -59,6 +59,17 @@ async function run() {
       const result = await sharedTipsCollestion.findOne(query);
       res.send(result);
     })
+    app.put('/sharedTips/:id', async(req, res)=>{
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)};
+      const options = {upsert: true};
+      const updatedTips = req.body;
+      const undatedDoc = {
+        $set: updatedTips
+      }
+      const result = await sharedTipsCollestion.updateOne(query,undatedDoc, options);
+      res.send(result);
+    })
     app.post('/sharedTips', async(req,res)=>{
       const sharedTip = req.body;
       const result = await sharedTipsCollestion.insertOne(sharedTip);
