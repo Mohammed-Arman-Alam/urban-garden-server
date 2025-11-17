@@ -48,7 +48,7 @@ async function run() {
       const result = await sharedTipsCollestion.find({ availability: "Public" }).toArray();
       res.send(result);
     })
-    app.get('/sharedTips/:name', async(req,res)=>{
+    app.get('/sharedTips/user/:name', async(req,res)=>{
       const name = req.params.name;
       const result = await sharedTipsCollestion.find({ userName: name}).toArray();
       res.send(result);
