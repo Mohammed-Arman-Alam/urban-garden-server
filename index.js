@@ -61,13 +61,13 @@ async function run() {
     })
     app.put('/sharedTips/:id', async(req, res)=>{
       const id = req.params.id;
-      const query = {_id: new ObjectId(id)};
+      const filter = {_id: new ObjectId(id)};
       const options = {upsert: true};
       const updatedTips = req.body;
-      const undatedDoc = {
+      const updatedDoc = {
         $set: updatedTips
       }
-      const result = await sharedTipsCollestion.updateOne(query,undatedDoc, options);
+      const result = await sharedTipsCollestion.updateOne(filter, updatedDoc, options);
       res.send(result);
     })
     app.post('/sharedTips', async(req,res)=>{
@@ -84,7 +84,6 @@ async function run() {
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
-    //await client.close();
   }
 }
 run().catch(console.dir);
